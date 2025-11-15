@@ -9,4 +9,5 @@ accelerate
 pydantic
 requests
 hf_transfer
+python-dotenv
 

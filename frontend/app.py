@@ -3,19 +3,26 @@ Frontend Service - UI and User Interface
 Handles all user interactions, image uploads, and displays results
 """
 from flask import Flask, render_template, request, jsonify
+from dotenv import load_dotenv
 import os
 from werkzeug.utils import secure_filename
 import base64
 from io import BytesIO
 from PIL import Image
 
+# Load environment variables
+load_dotenv()
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 
-# Backend API configuration
-BACKEND_API_URL = os.environ.get('BACKEND_API_URL', 'http://localhost:5001')
+# Configuration from environment
+PORT = int(os.getenv('PORT', 8081))
+HOST = os.getenv('HOST', '0.0.0.0')
+DEBUG = os.getenv('DEBUG', 'true').lower() == 'true'
+BACKEND_API_URL = os.getenv('BACKEND_API_URL', 'http://localhost:5001')
 
 # Create upload folder if it doesn't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -93,15 +100,15 @@ if __name__ == '__main__':
     print("\n" + "=" * 60)
     print("FRONTEND UI SERVER")
     print("=" * 60)
-    print("Server running at: http://localhost:8081")
+    print(f"Server running at: http://{HOST}:{PORT}")
     print(f"Backend API URL: {BACKEND_API_URL}")
     print("=" * 60 + "\n")
-    print("⚠️  Make sure the backend server is running at port 5001")
+    print("⚠️  Make sure the backend server is running")
     print("=" * 60 + "\n")
     
     app.run(
-        debug=True,
-        host='0.0.0.0',
-        port=8081
+        debug=DEBUG,
+        host=HOST,
+        port=PORT
     )
 

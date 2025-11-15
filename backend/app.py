@@ -4,10 +4,15 @@ Handles all AI model operations and image processing
 """
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from dotenv import load_dotenv
+import os
 import base64
 from io import BytesIO
 from PIL import Image
 import time
+
+# Load environment variables
+load_dotenv()
 
 # Import model functions
 from model import initialize_model, process_image_task
@@ -15,9 +20,13 @@ from model import initialize_model, process_image_task
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend-backend communication
 
+# Configuration from environment
+PORT = int(os.getenv('PORT', 5001))
+HOST = os.getenv('HOST', '0.0.0.0')
+DEBUG = os.getenv('DEBUG', 'true').lower() == 'true'
+
 # Initialize model on startup (only once, not in reloader process)
-import os
-if os.environ.get('WERKZEUG_RUN_MAIN') == 'true' or not app.debug:
+if os.environ.get('WERKZEUG_RUN_MAIN') == 'true' or not DEBUG:
     print("=" * 60)
     print("BACKEND API - Initializing Vision Model...")
     print("=" * 60)
@@ -136,15 +145,15 @@ if __name__ == '__main__':
     print("\n" + "=" * 60)
     print("BACKEND API SERVER")
     print("=" * 60)
-    print("Server running at: http://localhost:5001")
-    print("Health check: http://localhost:5001/health")
-    print("API endpoint: http://localhost:5001/api/process")
+    print(f"Server running at: http://{HOST}:{PORT}")
+    print(f"Health check: http://localhost:{PORT}/health")
+    print(f"API endpoint: http://localhost:{PORT}/api/process")
     print("=" * 60 + "\n")
     
     app.run(
-        debug=True,
-        host='0.0.0.0',
-        port=5001,
+        debug=DEBUG,
+        host=HOST,
+        port=PORT,
         threaded=True
     )
 

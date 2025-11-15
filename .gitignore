@@ -41,6 +41,8 @@ frontend/.cache/
 # Logs
 *.log
 
-# Environment variables
+# Environment variables (keep .env.example)
 .env
 .env.local
+backend/.env
+frontend/.env
