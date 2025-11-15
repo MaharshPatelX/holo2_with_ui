@@ -93,6 +93,15 @@ def process_image_task(model, processor, image: Image.Image, task: str, task_typ
         dict: Processing results including coordinates and visualizations
     """
     try:
+        # Pre-resize large images to reasonable size (SPEED OPTIMIZATION)
+        MAX_DIMENSION = 1280  # Maximum width or height
+        original_size = image.size
+        if max(image.size) > MAX_DIMENSION:
+            ratio = MAX_DIMENSION / max(image.size)
+            new_size = (int(image.width * ratio), int(image.height * ratio))
+            image = image.resize(new_size, Image.Resampling.LANCZOS)
+            print(f"Pre-resized image from {original_size} to {image.size} for faster processing")
+        
         # Resize image according to model's image processor
         image_processor_config = processor.image_processor
         resized_height, resized_width = smart_resize(
@@ -125,8 +134,13 @@ def process_image_task(model, processor, image: Image.Image, task: str, task_typ
             return_tensors="pt",
         ).to(model.device)
         
-        # Generate response
-        generated_ids = model.generate(**inputs, max_new_tokens=32)
+        # Generate response (optimized for speed)
+        generated_ids = model.generate(
+            **inputs, 
+            max_new_tokens=32,
+            do_sample=False,  # Faster than sampling
+            pad_token_id=processor.tokenizer.pad_token_id
+        )
         
         # Parse result
         content, thinking_content = parse_reasoning(generated_ids, processor)
