@@ -1,6 +1,6 @@
 // Global state
 let currentImageData = null;
-const BACKEND_API_URL = 'http://localhost:5001';
+const BACKEND_API_URL = ''; // Use frontend proxy (same origin)
 
 // DOM Elements
 const fileInput = document.getElementById('fileInput');
@@ -50,7 +50,7 @@ function setupEventListeners() {
 // Check backend connection
 async function checkBackendConnection() {
     try {
-        const response = await fetch(`${BACKEND_API_URL}/health`);
+        const response = await fetch('/api/health');
         if (response.ok) {
             const data = await response.json();
             console.log('✓ Backend connected:', data);
@@ -144,8 +144,8 @@ async function handleProcess() {
         
         console.log('Sending request to backend...');
         
-        // Call backend API
-        const response = await fetch(`${BACKEND_API_URL}/api/process`, {
+        // Call backend API (via frontend proxy)
+        const response = await fetch('/api/process', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -56,6 +56,32 @@ def upload_image():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/process', methods=['POST'])
+def proxy_process():
+    """Proxy requests to backend API"""
+    import requests
+    try:
+        # Forward request to backend (internal connection)
+        response = requests.post(
+            f'{BACKEND_API_URL}/api/process',
+            json=request.json,
+            headers={'Content-Type': 'application/json'},
+            timeout=60
+        )
+        return response.json(), response.status_code
+    except Exception as e:
+        return jsonify({'error': f'Backend connection failed: {str(e)}'}), 500
+
+@app.route('/api/health', methods=['GET'])
+def proxy_health():
+    """Proxy health check to backend API"""
+    import requests
+    try:
+        response = requests.get(f'{BACKEND_API_URL}/health', timeout=5)
+        return response.json(), response.status_code
+    except Exception as e:
+        return jsonify({'error': f'Backend not available: {str(e)}'}), 500
+
 @app.route('/config')
 def get_config():
     """Get frontend configuration"""
@@ -67,7 +93,7 @@ if __name__ == '__main__':
     print("\n" + "=" * 60)
     print("FRONTEND UI SERVER")
     print("=" * 60)
-    print("Server running at: http://localhost:5000")
+    print("Server running at: http://localhost:8081")
     print(f"Backend API URL: {BACKEND_API_URL}")
     print("=" * 60 + "\n")
     print("⚠️  Make sure the backend server is running at port 5001")
@@ -76,6 +102,6 @@ if __name__ == '__main__':
     app.run(
         debug=True,
         host='0.0.0.0',
-        port=5000
+        port=8081
     )
 
