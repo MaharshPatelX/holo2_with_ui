@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+backend/venv/
+frontend/venv/
+
+# Flask
+instance/
+.webassets-cache
+uploads/*
+!uploads/.gitkeep
+frontend/uploads/
+backend/uploads/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model cache
+.cache/
+models/
+backend/.cache/
+frontend/.cache/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local

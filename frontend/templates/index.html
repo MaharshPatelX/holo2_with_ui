@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moondream</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-circle"></i>
+                </div>
+                <span class="logo-text">Moondream</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-layout">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="section-label">PLAYGROUND</div>
+                <a href="#" class="sidebar-item active">Playground</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Playground</h1>
+            </div>
+
+            <!-- Image Upload/Preview Section -->
+            <div class="upload-section" id="uploadSection">
+                <div class="upload-preview" id="uploadPreview">
+                    <div class="preview-placeholder" id="previewPlaceholder">
+                        <i class="fas fa-image"></i>
+                        <p>Click to upload or drag and drop an image</p>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                    </div>
+                    <div class="preview-container" id="previewContainer" style="display: none;">
+                        <button class="close-btn" id="closeBtn">×</button>
+                        <div class="preview-label" id="previewLabel">Image</div>
+                        <img id="previewImage" src="" alt="Preview">
+                    </div>
+                </div>
+
+                <!-- Action Pills/Tags -->
+                <div class="action-pills" id="actionPills" style="display: none;">
+                    <button class="pill-btn active">Receipt</button>
+                    <button class="pill-btn">Order ID</button>
+                    <button class="pill-btn">Lava Cake</button>
+                </div>
+
+                <!-- Task Input -->
+                <div class="task-input-area" id="taskInputArea">
+                    <input 
+                        type="text" 
+                        class="task-input" 
+                        id="taskInput"
+                        placeholder="Enter what to point at..."
+                    >
+                    <button class="process-btn" id="processBtn">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <h2 class="results-title">Results</h2>
+                
+                <div class="results-container">
+                    <!-- Left: Result Image -->
+                    <div class="result-image-panel">
+                        <div class="result-image-wrapper">
+                            <canvas id="resultCanvas"></canvas>
+                        </div>
+                        <button class="show-code-btn">
+                            <i class="fas fa-code"></i>
+                            Show Code
+                        </button>
+                    </div>
+
+                    <!-- Right: Info Panel -->
+                    <div class="result-info-panel">
+                        <div class="info-badge">POINTING</div>
+                        <div class="info-content">
+                            <div class="info-label">PROMPT</div>
+                            <div class="info-value" id="resultPrompt">Receipt</div>
+                            <div class="info-meta" id="resultMeta">Response time: 376ms</div>
+                        </div>
+                        
+                        <!-- Coordinates Display -->
+                        <div class="coordinates-display" id="coordinatesDisplay" style="display: none;">
+                            <div class="coord-item">
+                                <span class="coord-label">Position:</span>
+                                <span class="coord-value" id="coordPosition">-</span>
+                            </div>
+                            <div class="coord-item">
+                                <span class="coord-label">Normalized:</span>
+                                <span class="coord-value" id="coordNormalized">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                <div class="spinner"></div>
+                <p>Processing...</p>
+            </div>
+
+            <!-- Toast Container -->
+            <div class="toast-container" id="toastContainer"></div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
