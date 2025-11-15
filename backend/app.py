@@ -15,13 +15,18 @@ from model import initialize_model, process_image_task
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend-backend communication
 
-# Initialize model on startup
-print("=" * 60)
-print("BACKEND API - Initializing Vision Model...")
-print("=" * 60)
-model, processor = initialize_model()
-print("✓ Model initialized successfully!")
-print("=" * 60)
+# Initialize model on startup (only once, not in reloader process)
+import os
+if os.environ.get('WERKZEUG_RUN_MAIN') == 'true' or not app.debug:
+    print("=" * 60)
+    print("BACKEND API - Initializing Vision Model...")
+    print("=" * 60)
+    model, processor = initialize_model()
+    print("✓ Model initialized successfully!")
+    print("=" * 60)
+else:
+    # Set dummy values for the initial load (before reloader)
+    model, processor = None, None
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -44,6 +49,13 @@ def process_image():
         "task_type": "click"
     }
     """
+    global model, processor
+    
+    # Ensure model is loaded (in case of reloader)
+    if model is None or processor is None:
+        print("Loading model in worker process...")
+        model, processor = initialize_model()
+    
     try:
         start_time = time.time()
         

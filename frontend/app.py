@@ -20,37 +20,10 @@ BACKEND_API_URL = os.environ.get('BACKEND_API_URL', 'http://localhost:5001')
 # Create upload folder if it doesn't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-def get_sample_images():
-    """Return sample images for the gallery"""
-    return [
-        {
-            'name': 'Calendar',
-            'url': 'https://raw.githubusercontent.com/hcompai/hai-cookbook/445d2017fcc8a0867081ea4786c34f87ed7053eb/data/calendar_example.jpg',
-            'description': 'Calendar booking interface'
-        },
-        {
-            'name': 'Receipt',
-            'url': 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400',
-            'description': 'Restaurant receipt'
-        },
-        {
-            'name': 'Web Page',
-            'url': 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400',
-            'description': 'Web page screenshot'
-        },
-        {
-            'name': 'Mobile App',
-            'url': 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400',
-            'description': 'Mobile app interface'
-        }
-    ]
-
 @app.route('/')
 def index():
     """Render the main page"""
-    sample_images = get_sample_images()
     return render_template('index.html', 
-                         sample_images=sample_images,
                          backend_api_url=BACKEND_API_URL)
 
 @app.route('/upload', methods=['POST'])
