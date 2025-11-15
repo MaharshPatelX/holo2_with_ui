@@ -9,7 +9,6 @@ const previewContainer = document.getElementById('previewContainer');
 const previewImage = document.getElementById('previewImage');
 const previewLabel = document.getElementById('previewLabel');
 const closeBtn = document.getElementById('closeBtn');
-const actionPills = document.getElementById('actionPills');
 const taskInput = document.getElementById('taskInput');
 const processBtn = document.getElementById('processBtn');
 const resultsSection = document.getElementById('resultsSection');
@@ -106,7 +105,6 @@ function loadImage(file) {
         // Show preview
         previewPlaceholder.style.display = 'none';
         previewContainer.style.display = 'flex';
-        actionPills.style.display = 'flex';
         
         // Hide results
         resultsSection.style.display = 'none';
@@ -123,7 +121,6 @@ function clearImage() {
     previewImage.src = '';
     previewContainer.style.display = 'none';
     previewPlaceholder.style.display = 'block';
-    actionPills.style.display = 'none';
     resultsSection.style.display = 'none';
     fileInput.value = '';
 }
